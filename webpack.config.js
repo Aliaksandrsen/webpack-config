@@ -7,11 +7,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader'
-          }
-        ]
+        loader: 'babel-loader'
       },
       // images
       {
@@ -43,16 +39,16 @@ module.exports = {
       {
         test: /\.(css)/,
         use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' },
+          'style-loader',
+          'css-loader'
         ]
       },
       {
         test: /\.(s[ca]ss)/,
         use: [
-          { loader: 'style-loader' },// добавление css на страницу
-          { loader: 'css-loader' },
-          { loader: 'sass-loader' }, // 
+          'style-loader',// добавление css на страницу
+          'css-loader',
+          'sass-loader', // лоадкры работают с конца
         ]
       },
     ]
