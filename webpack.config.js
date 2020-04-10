@@ -38,6 +38,11 @@ module.exports = (env = {}) => {
   return {
     mode: isProd ? 'production' : isDev && 'development',
 
+    // название файла в production mode
+    output: {
+      filename: isProd ? 'main-[hash:8].js' : underfined
+    },
+
     module: {
       rules: [
         {
