@@ -8,39 +8,12 @@ module.exports = (env = {}) => {
   const isProd = env.mode === 'production';
   const isDev = env.mode === 'development';
 
-  const getStyleLoaders = () => {
-    return [
-      isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-      'css-loader'
-    ]
-  };
-
-  const getPlugins = () => {
-    const plugins = [
-      new HtmlWebpackPlugin({
-        title: 'New title',
-        buildtime: new Date().toString(),
-        template: 'public/index.html'
-      })
-    ];
-
-    if (isProd) {
-      plugins.push(
-        new MiniCssExtractPlugin({
-          filename: 'main-[hash:8].css'
-        })
-      )
-    }
-
-    return plugins;
-  };
-
   return {
     mode: isProd ? 'production' : isDev && 'development',
 
-    // название файла в production mode
+    // название файла
     output: {
-      filename: isProd ? 'main-[hash:8].js' : underfined
+      filename: 'bundle.js'
     },
 
     module: {
@@ -78,36 +51,33 @@ module.exports = (env = {}) => {
         },
         {
           test: /\.(css)/,
-          use: getStyleLoaders(), // выбор css loader взавис от mode
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+          ]
         },
         {
           test: /\.(s[ca]ss)/,
-          //? ============================ убираем внизу ф-я
-          // use: [
-          //   MiniCssExtractPlugin.loader,// добавление css на страницу
-          //   'css-loader',
-          //   'sass-loader', // лоадкры работают с конца
-          // ],
-          //? ============================
-          use: [...getStyleLoaders(), 'sass-loader']
+          use: [
+            MiniCssExtractPlugin.loader,// добавление css на страницу
+            'css-loader',
+            'sass-loader', // лоадкры работают с конца
+          ],
         },
       ]
     },
-    //? ============================ убираем внизу ф-я
-    // plugins: [
-    //   new HtmlWebpackPlugin({
-    //     title: 'New title',
-    //     buildtime: new Date().toString(),
-    //     template: 'public/index.html'
-    //   }),
-    //   new MiniCssExtractPlugin({
-    //     filename: 'main-[hash:8].css'
-    //   })
-    // ],
-    //? ============================
-    plugins: getPlugins(),
+
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: 'public/index.html'
+      }),
+      new MiniCssExtractPlugin({
+        filename: 'main.css'
+      })
+    ],
     devServer: {
       open: true,
     },
+    devtool: 'source-map',
   }
 };
